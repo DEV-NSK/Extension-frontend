@@ -7,7 +7,10 @@ const Card = ({
   className = '', 
   padding = true,
   hover = false,
-  ...props 
+  multiline,      // Extract to prevent passing to DOM
+  jsx,           // Extract to prevent passing to DOM
+  headerAction,  // Extract to prevent passing to DOM
+  ...props       // Only spread safe props
 }) => {
   return (
     <div 
@@ -17,12 +20,21 @@ const Card = ({
         ${padding ? 'p-6' : ''}
         ${className}
       `}
-      {...props}
+      {...props}  // Only safe props are spread here
     >
-      {(title || subtitle) && (
+      {(title || subtitle || headerAction) && (
         <div className="mb-4">
-          {title && <h3 className="text-lg font-semibold text-gray-800">{title}</h3>}
-          {subtitle && <p className="text-sm text-gray-600 mt-1">{subtitle}</p>}
+          <div className="flex items-center justify-between">
+            <div>
+              {title && <h3 className="text-lg font-semibold text-gray-800">{title}</h3>}
+              {subtitle && <p className="text-sm text-gray-600 mt-1">{subtitle}</p>}
+            </div>
+            {headerAction && (
+              <div className="flex-shrink-0 ml-4">
+                {headerAction}
+              </div>
+            )}
+          </div>
         </div>
       )}
       {children}
